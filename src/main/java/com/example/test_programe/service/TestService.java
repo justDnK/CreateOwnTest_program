@@ -40,7 +40,7 @@ import com.example.test_programe.repository.TestRepository;
             testRepository.save(test);
 
             List<QuestionDto> questions = newTest.questions();               
-            Test usersTest = testRepository.findByTitle(newTest.title())
+            Test usersTest = testRepository.findByTitleAndUserId(newTest.title(), user.getId())
                 .orElseThrow(() -> new UsernameNotFoundException("error :C"));
 
             for(var item : questions) {                
