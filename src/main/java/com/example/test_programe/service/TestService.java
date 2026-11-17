@@ -3,8 +3,10 @@ package com.example.test_programe.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.test_programe.model.OptionAnswer;
 import com.example.test_programe.model.Question;
@@ -75,6 +77,21 @@ import com.example.test_programe.repository.TestRepository;
             }
 
             return testsTitle;
+        }
+
+        @Transactional 
+        public void deleteTestById(Long id) {
+            List<Question> questions = new ArrayList<>();
+
+            questions = questionRepository.findAllByTest_Id(id);
+
+            for(var item : questions) {
+                optionAnswerRepository.deleteAllByQuestionId(item.getId());
+            }
+
+            questionRepository.deleteAllByTest_Id(id);
+
+            testRepository.deleteById(id);
         }
 
     }
