@@ -1,6 +1,7 @@
-    package com.example.test_programe.service;
+package com.example.test_programe.service;
 
-    import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.example.test_programe.model.Test;
 import com.example.test_programe.model.Dto.OptionDto;
 import com.example.test_programe.model.Dto.QuestionDto;
 import com.example.test_programe.model.Dto.TestDto;
+import com.example.test_programe.model.Dto.TestDtoTitle;
 import com.example.test_programe.repository.OptionAnswerRepository;
 import com.example.test_programe.repository.QuestionRepository;
 import com.example.test_programe.repository.TestRepository;
@@ -60,6 +62,19 @@ import com.example.test_programe.repository.TestRepository;
                 }
             }
 
+        }
+
+        public List<TestDtoTitle> findTestsByUser(User user) {
+            List<TestDtoTitle> testsTitle = new ArrayList<>();
+            List<Test> tests = testRepository.findAllByUserId(user.getId())
+                .orElseThrow(() -> new UsernameNotFoundException("error :c"));
+                
+            for(var item : tests) {
+                TestDtoTitle test = new TestDtoTitle(item.getId(), item.getTitle());
+                testsTitle.add(test);
+            }
+
+            return testsTitle;
         }
 
     }
